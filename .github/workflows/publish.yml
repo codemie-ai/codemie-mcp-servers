@@ -1,0 +1,187 @@
+name: Publish MCP servers
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to check or publish, for example mcp-assistants-v0.2.1'
+        type: string
+        required: true
+      dry_run:
+        description: 'Build and check only; do not publish'
+        type: boolean
+        default: true
+      publish:
+        description: 'Type "publish" to confirm a real release (also requires dry_run off)'
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+
+# One run per tag. A fixed group would keep only the newest pending run and cancel the ones in between.
+concurrency:
+  group: publish-mcp-${{ github.event.release.tag_name || inputs.tag }}
+  cancel-in-progress: false
+
+jobs:
+  # Maps the tag prefix to one package. An unknown prefix fails here and nothing else runs.
+  resolve:
+    name: Resolve package
+    runs-on: ubuntu-latest
+    outputs:
+      package: ${{ steps.map.outputs.package }}
+      prefix: ${{ steps.map.outputs.prefix }}
+    steps:
+      - name: Map the tag prefix to a package
+        id: map
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name || inputs.tag }}
+        run: |
+          case "$RELEASE_TAG" in
+            mcp-assistants-v*) PACKAGE=assistants ;;
+            mcp-datasources-v*) PACKAGE=datasources ;;
+            mcp-workflows-v*) PACKAGE=workflows ;;
+            *)
+              echo "Unknown tag prefix in '$RELEASE_TAG'. Use mcp-assistants-v, mcp-datasources-v or mcp-workflows-v."
+              exit 1
+              ;;
+          esac
+          echo "package=$PACKAGE" >> "$GITHUB_OUTPUT"
+          echo "prefix=mcp-$PACKAGE-v" >> "$GITHUB_OUTPUT"
+
+  verify:
+    name: Verify and build
+    needs: resolve
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mcp/${{ needs.resolve.outputs.package }}
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+
+      - name: Install Poetry
+        run: pipx install poetry
+
+      - name: Require the tag on the released commit
+        id: tagcommit
+        if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == false && inputs.publish == 'publish')
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name || inputs.tag }}
+        run: |
+          TAGGED=$(git rev-parse -q --verify "refs/tags/$RELEASE_TAG^{commit}") || {
+            echo "Tag $RELEASE_TAG does not exist"; exit 1
+          }
+          if [ "$TAGGED" != "$GITHUB_SHA" ]; then
+            echo "Tag $RELEASE_TAG points to $TAGGED, not to the run commit $GITHUB_SHA"; exit 1
+          fi
+          echo "tagged=$TAGGED" >> "$GITHUB_OUTPUT"
+
+      - name: Require the tagged commit on main
+        if: github.event_name == 'release'
+        env:
+          TAGGED: ${{ steps.tagcommit.outputs.tagged }}
+        run: |
+          if ! git merge-base --is-ancestor "$TAGGED" origin/main; then
+            echo "The tagged commit $TAGGED is not on main"; exit 1
+          fi
+
+      - name: Require main for a real publish
+        if: github.event_name == 'workflow_dispatch' && inputs.dry_run == false && inputs.publish == 'publish'
+        run: |
+          if [ "$GITHUB_REF" != "refs/heads/main" ]; then
+            echo "A real publish must run from main, not $GITHUB_REF"; exit 1
+          fi
+
+      # The tag names the version. pyproject.toml holds only the base line (MAJOR.MINOR) and the tag must be on it.
+      - name: Read the version from the tag
+        id: version
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name || inputs.tag }}
+          PACKAGE: ${{ needs.resolve.outputs.package }}
+          TAG_PREFIX: ${{ needs.resolve.outputs.prefix }}
+        run: |
+          BASE=$(poetry version --short)
+          VERSION=$(python3 "$GITHUB_WORKSPACE/scripts/release/check_version.py" --ecosystem pypi --name "codemie-mcp-$PACKAGE" --tag "$RELEASE_TAG" --base "$BASE" --tag-prefix "$TAG_PREFIX")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Releasing codemie-mcp-$PACKAGE $VERSION" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Stamp the version
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: poetry version "$VERSION"
+
+      # The package has no committed lock file; dependencies are always resolved fresh.
+      - name: Install dependencies
+        run: poetry install --no-interaction
+
+      - name: Lint
+        run: poetry run ruff check .
+
+      - name: Check version against PyPI
+        env:
+          PACKAGE: ${{ needs.resolve.outputs.package }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: python3 "$GITHUB_WORKSPACE/scripts/release/check_version.py" --ecosystem pypi --name "codemie-mcp-$PACKAGE" --version "$VERSION"
+
+      - name: Build package
+        run: poetry build
+
+      - name: Upload distributions
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: mcp-dist
+          path: mcp/${{ needs.resolve.outputs.package }}/dist/
+          if-no-files-found: error
+
+  publish:
+    name: Publish to PyPI
+    needs: [resolve, verify]
+    if: >-
+      github.event_name == 'release' || (github.event_name == 'workflow_dispatch'
+      && inputs.dry_run == false && inputs.publish == 'publish'
+      && github.ref == 'refs/heads/main')
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      # Only the version script is needed. The registry is checked again here because this job can wait for
+      # approval and another release may have landed since `verify`. Checkout comes first: it clears the workspace.
+      - name: Check out the version script
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+          sparse-checkout: scripts/release
+
+      - name: Download distributions
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: mcp-dist
+          path: dist/
+
+      - name: Check the version against the registry again
+        env:
+          PACKAGE: ${{ needs.resolve.outputs.package }}
+          VERSION: ${{ needs.verify.outputs.version }}
+        run: python3 scripts/release/check_version.py --ecosystem pypi --name "codemie-mcp-$PACKAGE" --version "$VERSION"
+
+      # Trusted publishing: no token is stored.
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
+        with:
+          packages-dir: dist/

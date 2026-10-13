@@ -1,0 +1,94 @@
+name: CI
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    name: Package ${{ matrix.package }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package: [assistants, datasources, workflows]
+    defaults:
+      run:
+        working-directory: mcp/${{ matrix.package }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Setup Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+
+      - name: Install Poetry
+        run: pipx install poetry
+
+      # The packages have no committed lock file; dependencies are always resolved fresh against PyPI.
+      - name: Install dependencies
+        run: poetry install --no-interaction
+
+      - name: Lint
+        run: poetry run ruff check .
+
+      - name: Build package
+        run: poetry build
+
+      # The server must stop with a clear message when the platform settings are missing.
+      - name: Smoke test without settings
+        env:
+          PACKAGE: ${{ matrix.package }}
+        run: |
+          code=0
+          out=$(env -u CODEMIE_AUTH_SERVER_URL -u CODEMIE_AUTH_REALM_NAME -u CODEMIE_API_DOMAIN poetry run "codemie-mcp-$PACKAGE" </dev/null 2>&1) || code=$?
+          echo "$out"
+          if [ "$code" -eq 0 ]; then
+            echo "The server must exit with a non-zero code when settings are missing"; exit 1
+          fi
+          echo "$out" | grep -qF "Missing required settings: CODEMIE_AUTH_SERVER_URL, CODEMIE_AUTH_REALM_NAME, CODEMIE_API_DOMAIN"
+
+  scan:
+    name: Internal references and secrets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Scan for internal references
+        run: python3 scripts/scan_internal_refs.py --tree .
+
+      # The gitleaks CLI image is used instead of gitleaks-action, which needs a
+      # license for organization-owned repositories.
+      - name: Run gitleaks
+        run: >
+          docker run --rm -v "$PWD:/repo"
+          ghcr.io/gitleaks/gitleaks:v8.24.3
+          detect --source /repo --no-git --config /repo/.gitleaks.toml --redact --verbose
+
+  pr-title:
+    name: PR title
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Validate Conventional Commits title
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          pattern='^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-zA-Z0-9._/-]+\))?!?: .+'
+          if ! [[ "$PR_TITLE" =~ $pattern ]]; then
+            echo "PR title must follow Conventional Commits: <type>(<optional scope>): <description>"
+            echo "Allowed types: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert"
+            exit 1
+          fi
