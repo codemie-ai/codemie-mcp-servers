@@ -24,6 +24,7 @@ Returns workflow execution details and status
 
 ## Breaking changes in 0.2.0
 
+- The Python package is now `codemie_mcp_workflows`. The command `codemie-mcp-workflows` is unchanged.
 - The server no longer has built-in server addresses. `CODEMIE_AUTH_SERVER_URL`, `CODEMIE_AUTH_REALM_NAME` and `CODEMIE_API_DOMAIN` are required. Without them the server exits with an error.
 
 ## Installation

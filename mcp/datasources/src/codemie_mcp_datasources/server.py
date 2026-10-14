@@ -53,12 +53,13 @@ _client: Optional[CodeMieClient] = None
 
 def get_client() -> CodeMieClient:
     """Gets authenticated CodeMie client instance."""
+    validate_settings()
     username = os.getenv("CODEMIE_USERNAME")
     password = os.getenv("CODEMIE_PASSWORD")
     auth_client_id = os.getenv("CODEMIE_AUTH_CLIENT_ID", DEFAULT_AUTH_CLIENT_ID)
-    auth_realm_name = os.environ["CODEMIE_AUTH_REALM_NAME"]
-    auth_server_url = os.environ["CODEMIE_AUTH_SERVER_URL"]
-    codemie_api_domain = os.environ["CODEMIE_API_DOMAIN"]
+    auth_realm_name = os.environ["CODEMIE_AUTH_REALM_NAME"].strip()
+    auth_server_url = os.environ["CODEMIE_AUTH_SERVER_URL"].strip()
+    codemie_api_domain = os.environ["CODEMIE_API_DOMAIN"].strip()
     verify_ssl = _read_verify_ssl()
 
     if not username or not password:
@@ -333,7 +334,7 @@ async def get_datasource_processing_info(datasource_id: str) -> Dict[str, Any]:
 def main():
     try:
         validate_settings()
-        print("Starting CodeMie Datasources MCP server", file=sys.stdout)
+        print("Starting CodeMie Datasources MCP server", file=sys.stderr)
         # Initialize and run the server
         mcp.run(transport="stdio")
     except Exception as e:

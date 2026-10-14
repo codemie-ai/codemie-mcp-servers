@@ -23,6 +23,7 @@ Returns generated assistant response as text
 
 ## Breaking changes in 0.2.0
 
+- The Python package is now `codemie_mcp_assistants`. The command `codemie-mcp-assistants` is unchanged.
 - The server no longer has built-in server addresses. `CODEMIE_AUTH_SERVER_URL`, `CODEMIE_AUTH_REALM_NAME` and `CODEMIE_API_DOMAIN` are required. Without them the server exits with an error.
 
 ## Installation

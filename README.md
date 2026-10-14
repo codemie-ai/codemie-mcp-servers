@@ -22,10 +22,6 @@ These servers are clients of the CodeMie API: an AI tool connects to the servers
 - `codemie-sdk-python` `>=0.1.620 <0.2` (installed as a dependency)
 - A CodeMie installation. You must set `CODEMIE_AUTH_SERVER_URL`, `CODEMIE_AUTH_REALM_NAME` and `CODEMIE_API_DOMAIN`. The servers have no built-in addresses and exit with an error when one of them is missing.
 
-## Known limitation
-
-Each server ships its code in a top-level Python package named `src`. Do not install two servers into one environment: their files overwrite each other. Install each server in its own environment. `uvx` does this for you.
-
 ## Contributing
 
 Contributions are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) and the [Code of Conduct](CODE_OF_CONDUCT.md) first.

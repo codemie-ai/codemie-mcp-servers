@@ -4,7 +4,7 @@ version = "0.2.0"
 description = "MCP server for connecting to CodeMie Assistants API"
 readme = "README.md"
 packages = [
-    { include = "src"}
+    { include = "codemie_mcp_assistants", from = "src" }
 ]
 
 [tool.poetry]
@@ -17,7 +17,7 @@ homepage = "https://github.com/codemie-ai/codemie-mcp-servers"
 repository = "https://github.com/codemie-ai/codemie-mcp-servers"
 readme = "README.md"
 packages = [
-    { include = "src"}
+    { include = "codemie_mcp_assistants", from = "src" }
 ]
 
 [tool.poetry.dependencies]
@@ -25,7 +25,7 @@ python = "^3.12"
 mcp = "^1.6.0"
 httpx = "^0.28.1"
 codemie-sdk-python = ">=0.1.620,<0.2"
-certifi = "^2025.1.31"
+certifi = ">=2025.1.31"
 pydantic = "^2.11.2"
 
 [tool.poetry.group.dev.dependencies]
@@ -39,4 +39,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-codemie-mcp-assistants = "src.server:main"
+codemie-mcp-assistants = "codemie_mcp_assistants.server:main"
