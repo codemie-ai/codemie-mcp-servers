@@ -39,7 +39,7 @@ def get_client() -> CodeMieClient:
             print("Failed to obtain authentication token", file=sys.stderr)
             raise ValueError("Failed to obtain authentication token")
 
-        print("Successfully initialized CodeMie client", file=sys.stdout)
+        print("Successfully initialized CodeMie client", file=sys.stderr)
         return client
     except Exception as e:
         print(f"Error initializing client: {str(e)}", file=sys.stderr)
@@ -185,7 +185,7 @@ async def chat_with_assistant(
         # Create chat request
         if not conversation_id:
             conversation_id = str(uuid.uuid4())
-        print(f"Starting chat with assistant {settings.assistant_id} ", file=sys.stdout)
+        print(f"Starting chat with assistant {settings.assistant_id} ", file=sys.stderr)
 
         request = AssistantChatRequest(
             text=message,
@@ -208,7 +208,7 @@ async def chat_with_assistant(
 
         print(
             f"Successfully received response from {codemie_assistant.name} for conversation {conversation_id}",
-            file=sys.stdout,
+            file=sys.stderr,
         )
         return f"Response: {response.generated}. Conversation_Id: {conversation_id}"
 
@@ -219,7 +219,7 @@ async def chat_with_assistant(
 
 def main():
     try:
-        print("Starting CodeMie Assistants MCP server", file=sys.stdout)
+        print("Starting CodeMie Assistants MCP server", file=sys.stderr)
         # Initialize and run the server
         mcp.run(transport="stdio")
     except Exception as e:

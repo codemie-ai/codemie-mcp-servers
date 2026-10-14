@@ -38,7 +38,7 @@ def get_client() -> CodeMieClient:
             print("Failed to obtain authentication token", file=sys.stderr)
             raise ValueError("Failed to obtain authentication token")
 
-        print("Successfully initialized CodeMie client", file=sys.stdout)
+        print("Successfully initialized CodeMie client", file=sys.stderr)
         return client
     except Exception as e:
         print(f"Error initializing client: {str(e)}", file=sys.stderr)
@@ -98,7 +98,7 @@ async def execute_workflow(workflow_id: str, user_input: str = "") -> Dict[str, 
 
 def main():
     try:
-        print("Starting CodeMie Workflows MCP server", file=sys.stdout)
+        print("Starting CodeMie Workflows MCP server", file=sys.stderr)
         # Initialize and run the server
         mcp.run(transport="stdio")
     except Exception as e:
