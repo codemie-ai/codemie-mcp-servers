@@ -180,8 +180,8 @@ jobs:
           VERSION: ${{ needs.verify.outputs.version }}
         run: python3 scripts/release/check_version.py --ecosystem pypi --name "codemie-mcp-$PACKAGE" --version "$VERSION"
 
-      # Trusted publishing: no token is stored.
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
         with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
           packages-dir: dist/
