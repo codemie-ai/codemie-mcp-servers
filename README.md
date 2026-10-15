@@ -6,7 +6,7 @@ Model Context Protocol (MCP) servers for the CodeMie platform. Each server is a 
 |---------|------|---------|----------|
 | [`codemie-mcp-assistants`](mcp/assistants/README.md) | `mcp/assistants` | `codemie-mcp-assistants` | PyPI |
 | [`codemie-mcp-datasources`](mcp/datasources/README.md) | `mcp/datasources` | `codemie-mcp-datasources` | PyPI |
-| [`codemie-mcp-workflows`](mcp/workflows/README.md) | `mcp/workflows` | `codemie-mcp-workflows` | PyPI |
+| [`codemie-mcp-workflows`](mcp/workflows/README.md) | `mcp/workflows` | `codemie-mcp-workflows` | not published yet |
 
 ```bash
 uvx codemie-mcp-assistants
