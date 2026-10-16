@@ -1,6 +1,21 @@
+<div align="center">
+
+<img src="assets/codemie-logo.svg" alt="CodeMie" width="96" />
+
 # CodeMie MCP Servers
 
-Model Context Protocol (MCP) servers for the CodeMie platform. Each server is a separate Python package with its own README, usage and examples.
+**Model Context Protocol servers for the CodeMie platform.**
+
+[![PyPI](https://img.shields.io/pypi/v/codemie-mcp-assistants.svg?style=flat-square&label=PyPI)](https://pypi.org/project/codemie-mcp-assistants/)
+[![CI](https://img.shields.io/github/actions/workflow/status/codemie-ai/codemie-mcp-servers/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/codemie-ai/codemie-mcp-servers/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/python-3.12%2B-blue.svg?style=flat-square)](#requirements)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=flat-square)](LICENSE)
+
+</div>
+
+## What is it
+
+[MCP](https://modelcontextprotocol.io) servers that let AI tools such as Claude Desktop work with your [CodeMie](https://www.codemie.ai/) installation. Each server is a separate Python package with its own README, usage and examples.
 
 | Package | Path | Command | Registry |
 |---------|------|---------|----------|
@@ -23,6 +38,11 @@ The client SDKs and the infrastructure-as-code tools live in [codemie-sdk](https
 - Python 3.12 or later
 - `codemie-sdk-python` `>=0.1.620 <0.2` (installed as a dependency)
 - A CodeMie installation. You must set `CODEMIE_AUTH_SERVER_URL`, `CODEMIE_AUTH_REALM_NAME` and `CODEMIE_API_DOMAIN`. The servers have no built-in addresses and exit with an error when one of them is missing.
+
+## Documentation
+
+- [What is CodeMie](https://docs.codemie.ai/user-guide/getting-started/what-is-codemie/): an introduction to the platform.
+- [CodeMie documentation](https://docs.codemie.ai/): user guides and platform reference.
 
 ## Contributing
 
