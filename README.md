@@ -1,6 +1,21 @@
+<div align="center">
+
+<img src="assets/codemie-logo.svg" alt="CodeMie" width="96" />
+
 # CodeMie MCP Servers
 
-Model Context Protocol (MCP) servers for the CodeMie platform. Each server is a separate Python package with its own README, usage and examples.
+**Model Context Protocol servers for the CodeMie platform.**
+
+[![PyPI](https://img.shields.io/pypi/v/codemie-mcp-assistants.svg?style=flat-square&label=PyPI)](https://pypi.org/project/codemie-mcp-assistants/)
+[![CI](https://img.shields.io/github/actions/workflow/status/codemie-ai/codemie-mcp-servers/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/codemie-ai/codemie-mcp-servers/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/python-3.12%2B-blue.svg?style=flat-square)](#requirements)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=flat-square)](LICENSE)
+
+</div>
+
+## What is it
+
+[MCP](https://modelcontextprotocol.io) servers that let AI tools such as Claude Desktop work with your [CodeMie](https://github.com/codemie-ai/codemie-code) installation. Each server is a separate Python package with its own README, usage and examples.
 
 | Package | Path | Command | Registry |
 |---------|------|---------|----------|
