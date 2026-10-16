@@ -42,18 +42,18 @@ use [`uvx`](https://docs.astral.sh/uv/guides/tools/) to directly run *codemie-mc
 uvx codemie-mcp-workflows
 ```
 
-### Using Poetry
+### Using pip
 
-Alternatively you can install via Poetry:
+Alternatively you can install the package with pip:
 
 ```bash
-poetry install codemie-mcp-workflows
+pip install codemie-mcp-workflows
 ```
 
 After installation, you can run it as a script using:
 
 ```bash
-poetry run codemie-mcp-workflows
+codemie-mcp-workflows
 ```
 
 ## Configuration 
@@ -92,14 +92,14 @@ Add to your Claude settings:
 </details>
 
 <details>
-<summary>Using poetry installation</summary>
+<summary>Using pip installation</summary>
 
 **Required variables:**
 ```json
 "mcpServers": {
   "codemie-workflows": {
-    "command": "poetry",
-    "args": ["run", "codemie-mcp-workflows"],
+    "command": "codemie-mcp-workflows",
+    "args": [],
     "env": {
       "CODEMIE_AUTH_SERVER_URL": "https://auth.example.com/auth",
       "CODEMIE_AUTH_REALM_NAME": "your-realm",

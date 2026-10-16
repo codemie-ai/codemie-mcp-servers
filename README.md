@@ -16,6 +16,8 @@ uvx codemie-mcp-assistants
 
 These servers are clients of the CodeMie API: an AI tool connects to the servers, and the servers call your CodeMie installation. They are not the same as [codemie-mcp-connect-service](https://github.com/codemie-ai/codemie-mcp-connect-service). That service works the other way round: it lets CodeMie call local stdio MCP servers over HTTP. The two projects share no code and do not depend on each other.
 
+The client SDKs and the infrastructure-as-code tools live in [codemie-sdk](https://github.com/codemie-ai/codemie-sdk) and [codemie-cdk](https://github.com/codemie-ai/codemie-cdk).
+
 ## Requirements
 
 - Python 3.12 or later

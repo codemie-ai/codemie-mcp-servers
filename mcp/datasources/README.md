@@ -119,18 +119,18 @@ create_git_faq_datasource(
 ```
 
 
-### Using Poetry
+### Using pip
 
-Alternatively you can install via Poetry:
+Alternatively you can install the package with pip:
 
 ```bash
-poetry install codemie-mcp-datasources
+pip install codemie-mcp-datasources
 ```
 
 After installation, you can run it as a script using:
 
 ```bash
-poetry run codemie-mcp-datasources
+codemie-mcp-datasources
 ```
 
 ## Configuration
@@ -169,14 +169,14 @@ Add to your Claude settings:
 </details>
 
 <details>
-<summary>Using poetry installation</summary>
+<summary>Using pip installation</summary>
 
 **Required variables:**
 ```json
 "mcpServers": {
   "codemie-datasources": {
-    "command": "poetry",
-    "args": ["run", "codemie-mcp-datasources"],
+    "command": "codemie-mcp-datasources",
+    "args": [],
     "env": {
       "CODEMIE_AUTH_SERVER_URL": "https://auth.example.com/auth",
       "CODEMIE_AUTH_REALM_NAME": "your-realm",
