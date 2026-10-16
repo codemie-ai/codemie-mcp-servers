@@ -41,18 +41,18 @@ use [`uvx`](https://docs.astral.sh/uv/guides/tools/) to directly run *codemie-mc
 uvx codemie-mcp-assistants
 ```
 
-### Using Poetry
+### Using pip
 
-Alternatively you can install via Poetry:
+Alternatively you can install the package with pip:
 
 ```bash
-poetry install codemie-mcp-assistants
+pip install codemie-mcp-assistants
 ```
 
 After installation, you can run it as a script using:
 
 ```bash
-poetry run codemie-mcp-assistants
+codemie-mcp-assistants
 ```
 
 ## Configuration
@@ -92,14 +92,14 @@ Add to your Claude settings:
 </details>
 
 <details>
-<summary>Using poetry installation</summary>
+<summary>Using pip installation</summary>
 
 **Required variables:**
 ```json
 "mcpServers": {
   "codemie": {
-    "command": "poetry",
-    "args": ["run", "codemie-mcp-assistants"],
+    "command": "codemie-mcp-assistants",
+    "args": [],
     "env": {
       "CODEMIE_AUTH_SERVER_URL": "https://auth.example.com/auth",
       "CODEMIE_AUTH_REALM_NAME": "your-realm",
