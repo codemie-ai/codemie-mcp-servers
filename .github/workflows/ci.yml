@@ -22,12 +22,12 @@ jobs:
         working-directory: mcp/${{ matrix.package }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: Setup Python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.12'
 
@@ -57,25 +57,24 @@ jobs:
           fi
           echo "$out" | grep -qF "Missing required settings: CODEMIE_AUTH_SERVER_URL, CODEMIE_AUTH_REALM_NAME, CODEMIE_API_DOMAIN"
 
-  scan:
-    name: Internal references and secrets
+  internal-refs:
+    name: Internal references
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: Scan for internal references
         run: python3 scripts/scan_internal_refs.py --tree .
 
-      # The gitleaks CLI image is used instead of gitleaks-action, which needs a
-      # license for organization-owned repositories.
-      - name: Run gitleaks
-        run: >
-          docker run --rm -v "$PWD:/repo"
-          ghcr.io/gitleaks/gitleaks:v8.24.3
-          detect --source /repo --no-git --config /repo/.gitleaks.toml --redact --verbose
+  secrets-detection:
+    name: Security
+    permissions:
+      contents: read
+      pull-requests: read
+    uses: codemie-ai/ci-workflows/.github/workflows/reusable-secrets-detection.yml@main
 
   pr-title:
     name: PR title
