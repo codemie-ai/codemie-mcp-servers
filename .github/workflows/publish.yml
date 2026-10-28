@@ -21,6 +21,9 @@ on:
 permissions:
   contents: read
 
+env:
+  CI_WORKFLOWS_REF: main
+
 # One run per tag. A fixed group would keep only the newest pending run and cancel the ones in between.
 concurrency:
   group: publish-mcp-${{ github.event.release.tag_name || inputs.tag }}
@@ -102,7 +105,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: codemie-ai/ci-workflows
-          ref: main
+          ref: ${{ env.CI_WORKFLOWS_REF }}
           path: .ci-workflows-temp
           sparse-checkout: scripts/release/check_version.py
           sparse-checkout-cone-mode: false
@@ -180,7 +183,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: codemie-ai/ci-workflows
-          ref: main
+          ref: ${{ env.CI_WORKFLOWS_REF }}
           sparse-checkout: scripts/release/check_version.py
           sparse-checkout-cone-mode: false
           persist-credentials: false
