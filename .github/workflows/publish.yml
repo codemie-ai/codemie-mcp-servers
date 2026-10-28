@@ -68,30 +68,6 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
 
-      - name: Checkout version check script
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          repository: codemie-ai/ci-workflows
-          ref: main
-          path: .ci-workflows-temp
-          sparse-checkout: scripts/release/check_version.py
-          sparse-checkout-cone-mode: false
-          persist-credentials: false
-
-      - name: Setup version check script
-        run: |
-          mkdir -p "${RUNNER_TEMP}/scripts"
-          cp "${GITHUB_WORKSPACE}/.ci-workflows-temp/scripts/release/check_version.py" "${RUNNER_TEMP}/scripts/check_version.py"
-          rm -rf "${GITHUB_WORKSPACE}/.ci-workflows-temp"
-
-      - name: Setup Python
-        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
-        with:
-          python-version: '3.12'
-
-      - name: Install Poetry
-        run: pipx install poetry
-
       - name: Require the tag on the released commit
         id: tagcommit
         if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == false && inputs.publish == 'publish')
@@ -121,6 +97,30 @@ jobs:
           if [ "$GITHUB_REF" != "refs/heads/main" ]; then
             echo "A real publish must run from main, not $GITHUB_REF"; exit 1
           fi
+
+      - name: Checkout version check script
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: codemie-ai/ci-workflows
+          ref: main
+          path: .ci-workflows-temp
+          sparse-checkout: scripts/release/check_version.py
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+
+      - name: Setup version check script
+        run: |
+          mkdir -p "${RUNNER_TEMP}/scripts"
+          cp "${GITHUB_WORKSPACE}/.ci-workflows-temp/scripts/release/check_version.py" "${RUNNER_TEMP}/scripts/check_version.py"
+          rm -rf "${GITHUB_WORKSPACE}/.ci-workflows-temp"
+
+      - name: Setup Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+
+      - name: Install Poetry
+        run: pipx install poetry
 
       # The tag names the version. pyproject.toml holds only the base line (MAJOR.MINOR) and the tag must be on it.
       - name: Read the version from the tag
