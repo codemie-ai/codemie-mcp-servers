@@ -38,20 +38,28 @@ The `verify` job has no secrets. It fails, and nothing is published, when:
 - the tagged commit is not on `main`;
 - for a manual publish, the tag does not exist or does not point to the dispatched commit;
 - the tag prefix, format or line does not match;
-- the version is equal to or lower than the highest published version (`scripts/release/check_version.py`);
+- the version is equal to or lower than the highest published version (`check_version.py` from `codemie-ai/ci-workflows`);
 - lint or the build fail.
 
 The `publish` job runs the version check again right before the upload, because it can wait for approval and another release may land in between.
 
-`scripts/release/check_version.py` compares the version with the live PyPI registry.
+`check_version.py` compares the version with the live PyPI registry.
 
 - A package that is not on PyPI yet (HTTP 404) has no latest version. The check passes.
 - A timeout, network error, malformed registry response or a published version that cannot be parsed stops the release. The gate fails closed.
 
-Print the version a tag names (no network):
+Run it locally:
 
 ```bash
-python3 scripts/release/check_version.py --ecosystem pypi --name codemie-mcp-assistants --tag mcp-assistants-v0.2.1 --base 0.2.0 --tag-prefix mcp-assistants-v
+curl -fsSL https://raw.githubusercontent.com/codemie-ai/ci-workflows/main/scripts/release/check_version.py \
+  | python3 -I - --ecosystem pypi --name codemie-mcp-assistants --version 0.2.1
+```
+
+Read the version from a release tag and check its format and baseline (does not contact PyPI):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/codemie-ai/ci-workflows/main/scripts/release/check_version.py \
+  | python3 -I - --ecosystem pypi --name codemie-mcp-assistants --tag mcp-assistants-v0.2.1 --base 0.2.0 --tag-prefix mcp-assistants-v
 ```
 
 ## Admin prerequisites
