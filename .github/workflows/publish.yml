@@ -155,6 +155,9 @@ jobs:
           path: mcp/${{ needs.resolve.outputs.package }}/dist/
           if-no-files-found: error
 
+  # Trusted Publishing: PyPI rejects tokens from reusable workflows, so the publish
+  # runs as a composite action inside this job. The PyPI publisher for each package
+  # must name this repository, publish.yml and the release environment.
   publish:
     name: Publish to PyPI
     needs: [resolve, verify]
@@ -162,10 +165,14 @@ jobs:
       github.event_name == 'release' || (github.event_name == 'workflow_dispatch'
       && inputs.dry_run == false && inputs.publish == 'publish'
       && github.ref == 'refs/heads/main')
+    runs-on: ubuntu-latest
+    environment: release
     permissions:
       contents: read
       id-token: write
-    uses: codemie-ai/ci-workflows/.github/workflows/reusable-publish-pypi.yml@main
-    with:
-      artifact-name: mcp-dist
-      packages-dir: dist/
+    steps:
+      - name: Publish to PyPI
+        uses: codemie-ai/ci-workflows/.github/actions/publish-pypi@main
+        with:
+          artifact-name: mcp-dist
+          packages-dir: dist/
