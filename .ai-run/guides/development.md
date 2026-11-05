@@ -47,11 +47,11 @@ Tools are `async def`, but they call the SDK synchronously, see `list_datasource
 
 ## Versioning
 
-Each `mcp/*/pyproject.toml` holds the base version twice: `[project] version` (line 3) and `[tool.poetry] version` (line 12). The publish workflow reads and stamps the version with `poetry version` (`.github/workflows/publish.yml`, lines 125 and 133). The tag names the release version. Release rules are in `docs/RELEASING.md`.
+Each `mcp/*/pyproject.toml` holds the base version twice: the `version` key in `[project]` and the `version` key in `[tool.poetry]`. The publish workflow reads and stamps the version with `poetry version` (`.github/workflows/publish.yml`, lines 125 and 133). The tag names the release version. Release rules are in `docs/RELEASING.md`.
 
 When you raise the base line, change both copies.
 
-Check on 2026-11-05 in a scratch copy: with Poetry 2.5.1, `poetry version 0.9.9` in `mcp/assistants` changed both copies. CI installs Poetry with `pipx install poetry`, so its version can differ. That Poetry version is the only one checked; any other version is an assumption.
+Check on 2026-11-05 in a scratch copy: with Poetry 2.5.1, setting a new version with the Poetry `version` subcommand in `mcp/assistants` changed both copies. CI installs Poetry with `pipx install poetry`, so its version can differ. That Poetry version is the only one checked; any other version is an assumption.
 
 ## Documentation
 
