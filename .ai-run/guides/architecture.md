@@ -21,7 +21,6 @@ Each server is a client of the CodeMie API. It is not related to `codemie-mcp-co
 | `mcp/workflows` | One tool that starts a workflow | `main` in `mcp/workflows/src/codemie_mcp_workflows/server.py` |
 | `.github/workflows` | CI, CodeQL, PR title check, PyPI publish | `.github/workflows/ci.yml` |
 | `docs/RELEASING.md` | Release procedure. Source of truth for releases. | `docs/RELEASING.md` |
-| `.internal-sync` | Two commit hashes from the old internal sync. The file does not label them. | `.internal-sync` |
 
 Each package has `Makefile`, `README.md`, `pyproject.toml` and `src/codemie_mcp_<package>/`. The three Makefiles are identical. The `model.py` file exists only in assistants and workflows.
 
