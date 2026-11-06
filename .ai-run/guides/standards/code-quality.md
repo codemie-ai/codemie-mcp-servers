@@ -1,6 +1,6 @@
 # Code Quality
 
-Exact commands are in `quality-gates.md`.
+Exact commands are in `.ai-run/guides/quality-gates.md`.
 
 ## Enforced Rules
 

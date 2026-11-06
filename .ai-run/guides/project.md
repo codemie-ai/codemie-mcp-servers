@@ -17,7 +17,7 @@
 
 > Adapter configuration belongs exclusively in `## Ticket Adapter`. Do not duplicate adapter status or instructions in the Work Item Tracker table.
 
-The repository is public. Never write a real ticket key, a tracker host or a personal e-mail in a tracked file (rules in `security.md`). This file is the only place where the placeholder form appears.
+Public content rules: `.ai-run/guides/security.md`, section "Public repository content".
 
 ## Ticket Adapter
 
@@ -41,11 +41,7 @@ The repository is public. Never write a real ticket key, a tracker host or a per
 
 **Status**: configured
 **Adapter**: `gh` CLI
-**Instructions**: Use `gh pr create --repo codemie-ai/<repo> --base main`. Read `gh pr view` and `gh pr checks` for status. Load `.ai-run/guides/git-workflow.md` for the title format and the rule on ticket keys.
-
-## Decisions
-
-- Task folders under `docs/superpowers/tasks/` are ignored whole, so no separate `*.local.*` rule exists in `.gitignore`.
+**Instructions**: Use `gh pr create --repo codemie-ai/codemie-mcp-servers --base main`. Read `gh pr view` and `gh pr checks` for status. Load `.ai-run/guides/standards/git-workflow.md` for the title format and the rule on ticket keys.
 
 ## Complexity Scoring
 

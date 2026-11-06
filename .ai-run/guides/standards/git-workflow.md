@@ -15,19 +15,20 @@ Use Conventional Commits. The PR title is the checked format (`.github/workflows
 ```
 
 - Allowed types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert` (`CONTRIBUTING.md`).
-- Scopes in use: `workflows`, and the package names `assistants`, `datasources`, `workflows`.
+- Scope in use on `main`: `workflows` (GitHub Actions workflows). `CONTRIBUTING.md` shows the package names as scopes in its examples, for example `fix(datasources): handle empty response`.
 - Individual commit messages are not checked. Use the same format, because `main` shows it, for example `ci(workflows): reuse pypi publish workflow (#15)`.
-- No ticket key in a branch name, commit message, PR title or PR body. `CONTRIBUTING.md` forbids ticket keys in committed content, and the recent subjects on `main` carry none. Record the PR link in the ticket through the Ticket Adapter in `project.md`.
+- No ticket key in a branch name, commit message, PR title or PR body. `CONTRIBUTING.md` forbids ticket keys in committed content, and the recent subjects on `main` carry none. Record the PR link in the ticket through the Ticket Adapter in `.ai-run/guides/project.md`.
 
 ## Merge Strategy
 
-Squash merge `[ASSUMPTION]`. The recent commits on `main` have one parent and end in the PR number, for example `ci(workflows): reuse pypi publish workflow (#15)`. The title becomes the commit subject on `main`, so the title format matters. No repository file states the strategy, so this is inferred from history.
+Squash merge. Assumption: The recent commits on `main` have one parent and end in the PR number, for example `ci(workflows): reuse pypi publish workflow (#15)`. The title becomes the commit subject on `main`, so the title format matters. No repository file states the strategy, so this is inferred from history.
 
 ## Pull Requests
 
 - An external contributor forks the repository and opens the PR from the fork (`CONTRIBUTING.md`). Maintainers may push branches to `origin`.
+- To link a GitHub issue, write `Closes #N` in the PR body.
 - Keep a PR on one change. Describe what changed and why.
-- Run the checks in `quality-gates.md` in each changed package.
+- Run the checks in `.ai-run/guides/quality-gates.md` in each changed package.
 - A merge to `main` does not release a package. Release steps are in `docs/RELEASING.md`.
 - The internal sync is stopped. Edit the guides in this repository.
 
@@ -37,7 +38,7 @@ Squash merge `[ASSUMPTION]`. The recent commits on `main` have one parent and en
 |---|---|
 | A ticket key in the PR title | `ci(workflows): remove fetch-depth from secrets detection` |
 | `update stuff` as the PR title | `fix(datasources): handle empty response` |
-| Ticket key or tracker URL in a tracked file or example | Placeholder form from `project.md` only |
+| Ticket key or tracker URL in a tracked file or example | Placeholder form from `.ai-run/guides/project.md` only |
 | Commit `poetry.lock` or `dist/` after a local check | Stage only named files. These appear as untracked. |
 | `git add -A` | `git add <paths>` |
 | Force-push to `main` | Open a PR from a feature branch |

@@ -46,4 +46,4 @@ Assistant names and descriptions from the platform go into the tool description 
 | Actions in this repo are pinned by SHA | `.github/workflows/ci.yml:25` |
 | Reusable workflows are pinned to `@main`, not a SHA. This is a known exposure: a change in `ci-workflows` reaches CI and publish without review here. | `.github/workflows/ci.yml:64`, `.github/workflows/publish.yml:170` |
 | A `release` event publishes only a tagged commit on `main` | `.github/workflows/publish.yml:88-95` |
-| A manual `workflow_dispatch` publish needs `main` as the ref and a tag on the run commit | `.github/workflows/publish.yml:97-102`, `.github/workflows/publish.yml:74-86` |
+| A manual `workflow_dispatch` publish needs `dry_run` off, the `publish` input set to `publish`, `main` as the ref, and a tag on the run commit | `.github/workflows/publish.yml:76`, `.github/workflows/publish.yml:97-102`, `.github/workflows/publish.yml:163-166`, `.github/workflows/publish.yml:74-86` |

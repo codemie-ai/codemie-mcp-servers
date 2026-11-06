@@ -130,6 +130,6 @@ External services: the CodeMie API (through the SDK), PyPI (publication) and `co
 | `sanitize_tool_name` in the assistants `server.py` | The length check uses 60 and the slice uses 64. The `ask_` prefix is added after that, where `chat_tool_name` is set. A long name can pass 64 characters. |
 | `mcp/workflows/README.md`, section "API" | The README documents a tool `execute` with `parameters`. The code has `execute_workflow` with `user_input`. Trust the code. |
 | `mcp/datasources/README.md`, section "Environment Variables" | The README offers client credentials. The code requires username and password. Trust the code. |
-| `pyproject.toml` of each package | The base version sits in two places. See "Versioning" in `development.md`. |
+| `pyproject.toml` of each package | The base version sits in two places. Poetry uses only `[project].version` and ignores the `[tool.poetry]` copy. See "Versioning" in `development.md`. |
 
 These come from reading the code. No test or live run confirmed them.
