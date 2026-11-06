@@ -41,15 +41,15 @@ Tools are `async def`, but they call the SDK synchronously, see `list_datasource
 | Rule | Evidence |
 |---|---|
 | Declare dependencies per package | `[tool.poetry.dependencies]` in each `pyproject.toml` |
-| Do not commit a lockfile | `CONTRIBUTING.md`, Local Checks |
+| Do not commit a lockfile | No lockfile is tracked; `CONTRIBUTING.md`, Local Checks, says the packages have no lockfile and resolve fresh |
 | Keep the SDK range in step with the root README | `README.md`, `mcp/assistants/pyproject.toml` |
 | Do not run `make publish`. Release through `publish.yml`. | `Makefile` target `publish`, `docs/RELEASING.md` |
 
 ## Versioning
 
-Each `mcp/*/pyproject.toml` holds the base version twice: the `version` key in `[project]` and the `version` key in `[tool.poetry]`. The publish workflow reads and stamps the version with `poetry version` (`.github/workflows/publish.yml`, lines 125 and 133). The tag names the release version. Release rules are in `docs/RELEASING.md`.
+Each `mcp/*/pyproject.toml` holds the base version twice: the `version` key in `[project]` and the `version` key in `[tool.poetry]`. Poetry 2.x uses only `[project].version`; `poetry check` reports that the `[tool.poetry]` copy is ignored. The publish workflow reads the base with `poetry version --short` and stamps the release version with `poetry version` (`.github/workflows/publish.yml`, lines 125 and 133). The tag names the release version. Release rules are in `docs/RELEASING.md`.
 
-When you raise the base line, change both copies.
+When you raise the base line, change `[project].version`. Keep the `[tool.poetry].version` copy equal for consistency only.
 
 Check on 2026-11-05 in a scratch copy: with Poetry 2.5.1, setting a new version with the Poetry `version` subcommand in `mcp/assistants` changed both copies. CI installs Poetry with `pipx install poetry`, so its version can differ. That Poetry version is the only one checked; any other version is an assumption.
 
