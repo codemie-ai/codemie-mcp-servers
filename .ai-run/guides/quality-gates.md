@@ -58,4 +58,4 @@ The last four have no local command in this repository. CI permissions and pinni
 | Type check | No mypy or pyright configuration | `mcp/assistants/pyproject.toml` |
 | Format check | CI runs `ruff check` only, not `ruff format`, `black` or `isort` | `.github/workflows/ci.yml`, step "Lint" |
 
-Do not report a package as tested because lint and build pass. To verify tool behaviour, say what you ran. The servers need a live CodeMie installation.
+Test strategy and the list of risky untested code are in `testing/qa-strategy.md` and `testing/qa-health.md`. Do not report a package as tested because lint and build pass. To verify tool behaviour, say what you ran. The servers need a live CodeMie installation.
