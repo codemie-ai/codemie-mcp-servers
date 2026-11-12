@@ -22,7 +22,7 @@ Public content rules: `.ai-run/guides/security.md`, section "Public repository c
 ## Ticket Adapter
 
 **Status**: configured
-**Adapter**: Invoke the `codemie-jira-assistant` skill via the Skill tool.
+**Adapter**: Invoke the `codemie-jira-assistant` skill via the Skill tool. The skill is for maintainers only and this repository does not ship it. If the skill is not loaded in your session, treat this adapter as not configured and skip the ticket steps.
 **Lookup**: Invoke the `codemie-jira-assistant` skill with the ticket key and a request for summary, description, acceptance criteria, and links.
 **Create**: Invoke the `codemie-jira-assistant` skill with the complete ticket payload or approved story file as the argument.
 **Output**: Ticket key and URL returned by the skill.
@@ -41,7 +41,7 @@ Public content rules: `.ai-run/guides/security.md`, section "Public repository c
 
 **Status**: configured
 **Adapter**: `gh` CLI
-**Instructions**: Use `gh pr create --repo codemie-ai/codemie-mcp-servers --base main`. Read `gh pr view` and `gh pr checks` for status. Load `.ai-run/guides/standards/git-workflow.md` for the title format and the rule on ticket keys.
+**Instructions**: In a clone of a fork, run `gh repo set-default codemie-ai/codemie-mcp-servers` once, or export `GH_REPO=codemie-ai/codemie-mcp-servers`. Otherwise bare `gh` commands resolve against the fork and do not find the PR. Create the PR with `gh pr create --repo codemie-ai/codemie-mcp-servers --base main`. Read the status with `gh pr view <number>` and `gh pr checks <number>`. Load `.ai-run/guides/standards/git-workflow.md` for the title format and the rule on ticket keys.
 
 ## Complexity Scoring
 

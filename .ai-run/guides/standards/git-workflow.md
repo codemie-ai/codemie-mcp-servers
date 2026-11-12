@@ -17,7 +17,7 @@ Use Conventional Commits. The PR title is the checked format (`.github/workflows
 - Allowed types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert` (`CONTRIBUTING.md`).
 - Scope in use on `main`: `workflows` (GitHub Actions workflows). `CONTRIBUTING.md` shows the package names as scopes in its examples, for example `fix(datasources): handle empty response`.
 - Individual commit messages are not checked. Use the same format, because `main` shows it, for example `ci(workflows): reuse pypi publish workflow (#15)`.
-- No ticket key in a branch name, commit message, PR title or PR body. `CONTRIBUTING.md` forbids ticket keys in committed content, and the recent subjects on `main` carry none. Record the PR link in the ticket through the Ticket Adapter in `.ai-run/guides/project.md`.
+- No ticket key in a branch name, commit message, PR title or PR body. `CONTRIBUTING.md` forbids ticket keys in committed content, and the recent subjects on `main` carry none. When the Ticket Adapter in `.ai-run/guides/project.md` is available, record the PR link in the ticket through it.
 
 ## Merge Strategy
 
