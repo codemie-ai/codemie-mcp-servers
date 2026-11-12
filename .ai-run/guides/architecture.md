@@ -73,6 +73,8 @@ All three use `codemie-sdk-python >=0.1.620,<0.2`, `mcp ^1.6.0` and `certifi`.
 | datasources | `get_datasource_processing_info` | `get_datasource_processing_info` |
 | workflows | `execute_workflow` | `execute_workflow` |
 
+Four datasources tools fail on every call today: `create_code_datasource`, `create_git_faq_datasource`, `update_code_datasource` and `get_datasource_processing_info`. See "Known Defects To Check Before You Copy A Pattern".
+
 ## Tool Patterns
 
 Write an `async def` with `@mcp.tool()`. The type hints and the docstring are the schema that the AI tool reads.
@@ -119,17 +121,18 @@ The servers have no retry, rate-limit or timeout logic of their own. They log to
 
 Imports from `codemie_sdk.models.*` tie the servers to SDK models. The workflows response model reads aliased SDK fields (`WorkflowExecutionResponse`). Check these when you change the lower bound of the SDK range. No lockfile exists, so CI resolves the newest allowed SDK on each run.
 
-External services: the CodeMie API (through the SDK), PyPI (publication) and `codemie-ai/ci-workflows` (reusable workflows). Token, pinning and permissions are in `security.md`. Release steps are in `docs/RELEASING.md`.
+External services: the CodeMie API (through the SDK), PyPI (publication) and `codemie-ai/ci-workflows` (reusable workflows). Publishing, pinning and permissions are in `security.md`. Release steps are in `docs/RELEASING.md`.
 
 ## Known Defects To Check Before You Copy A Pattern
 
 | Location | Finding |
 |---|---|
-| `create_code_datasource`, `create_git_faq_datasource`, `update_code_datasource` in the datasources `server.py` | Each returns `get_datasource(...)` with no `await`, and `get_datasource` is `async def`. The caller gets a coroutine. |
-| `update_code_datasource` in the datasources `server.py` | `branch or current.code.branch if current.code else None` drops a supplied `branch` when `current.code` is empty, because of operator precedence. |
+| `create_code_datasource`, `create_git_faq_datasource` in the datasources `server.py` | The tool reads `datasource.id` from the result of `client.datasources.create(...)`. The SDK `create()` returns a `dict` (the backend response), so `.id` raises `AttributeError`. The POST is already sent: the platform creates the datasource and the tool reports a failure. To fix it, find the new datasource another way (for example by name and project) or return the backend response. A second problem follows: the tool returns `get_datasource(...)` with no `await`, and `get_datasource` is `async def`. |
+| `update_code_datasource` in the datasources `server.py` | The tool builds `UpdateCodeDataSourceRequest` without `link`. The SDK model `Code` requires `link`, so every call raises `ValidationError` and sends no PUT. Pass the current link (`current.code.link`). After that, the same `dict` and `await` problems as the create tools apply to `client.datasources.update(...)`. Also, `branch or current.code.branch if current.code else None` drops a supplied `branch` when `current.code` is empty, because of operator precedence. |
+| `get_datasource_processing_info` in the datasources `server.py` | The tool calls `client.datasources.get_processing_info(...)`. The SDK has no such method, so every call raises `AttributeError`. |
 | `sanitize_tool_name` in the assistants `server.py` | The length check uses 60 and the slice uses 64. The `ask_` prefix is added after that, where `chat_tool_name` is set. A long name can pass 64 characters. |
 | `mcp/workflows/README.md`, section "API" | The README documents a tool `execute` with `parameters`. The code has `execute_workflow` with `user_input`. Trust the code. |
 | `mcp/datasources/README.md`, section "Environment Variables" | The README offers client credentials. The code requires username and password. Trust the code. |
 | `pyproject.toml` of each package | The base version sits in two places. Poetry uses only `[project].version` and ignores the `[tool.poetry]` copy. See "Versioning" in `development.md`. |
 
-These come from reading the code. No test or live run confirmed them.
+The datasources rows were checked against `codemie-sdk-python` 0.1.620 and 0.1.713 (the ends of the pinned range) on 2026-11-12, with SDK models and service methods only, no live platform. The other rows come from reading the code. The list is not complete. No test guards any of these defects. Tests and fixes for them are in `testing/qa-strategy.md`, "Anti-Patterns".

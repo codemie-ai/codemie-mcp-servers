@@ -22,8 +22,7 @@ Modules with zero coverage that carry logic:
 
 | Path | Coverage | Risk reason |
 |---|---|---|
-| `mcp/datasources/src/codemie_mcp_datasources/server.py:212`, `:256`, `:313` | 0% | `create_code_datasource`, `create_git_faq_datasource` and `update_code_datasource` return a coroutine, not a dict (known defect in `architecture.md`). A test would fail today. |
-| `mcp/datasources/src/codemie_mcp_datasources/server.py:303` | 0% | `update_code_datasource` drops a supplied `branch` when `current.code` is empty (operator precedence). |
+| `create_code_datasource`, `create_git_faq_datasource`, `update_code_datasource`, `get_datasource_processing_info` in `mcp/datasources/src/codemie_mcp_datasources/server.py` | 0% | Each tool fails on every call today (`architecture.md`, "Known Defects To Check Before You Copy A Pattern"). A test with an SDK-shaped stub would fail today. |
 | `mcp/datasources/src/codemie_mcp_datasources/server.py:260-267` | 0% | `delete_datasource` deletes with no confirmation. Destructive tool with no test of its input or result. |
 | `mcp/assistants/src/codemie_mcp_assistants/server.py:49-76` | 0% | `sanitize_tool_name` checks `> 60` and slices to 64, then `ask_` is added (`:119`). A long assistant name can make an invalid MCP tool name. Pure function, cheapest test to add. |
 | `mcp/assistants/src/codemie_mcp_assistants/model.py:44`, `mcp/workflows/src/codemie_mcp_workflows/model.py:30` | 0% | `validate_auth_method` decides between username and password and client credentials. Only the "nothing set" path is exercised. |
@@ -36,7 +35,7 @@ Modules with zero coverage that carry logic:
 - `pytest` is a declared dev dependency in each package but has no tests and no configuration (`mcp/assistants/pyproject.toml:32`).
 - `make test` is declared in `.PHONY` but has no recipe (`mcp/assistants/Makefile:1`). It prints `Nothing to be done`.
 - CI has no test step and no coverage step (`.github/workflows/ci.yml:23-58`).
-- Six known defects in `architecture.md`, "Known Defects To Check Before You Copy A Pattern", come from reading the code. No test confirms or guards them.
+- No test guards the known defects in `architecture.md`, "Known Defects To Check Before You Copy A Pattern".
 - Tool behaviour needs a live CodeMie installation. No mock client or fixture exists.
 
 ## Recent Test Activity

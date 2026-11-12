@@ -41,11 +41,11 @@ Assistant names and descriptions from the platform go into the tool description 
 
 | Control | Evidence |
 |---|---|
-| Default workflow permission is `contents: read` | `.github/workflows/ci.yml:10` |
-| Only the `publish` job has `id-token: write` | `.github/workflows/publish.yml:169` |
-| The `publish` job passes the secret `PYPI_API_TOKEN` to the reusable workflow. The token is temporary. Trusted publishing is the target (`docs/RELEASING.md`, "Admin prerequisites"). | `.github/workflows/publish.yml:171-172` |
-| The `verify` job has no secrets. It downloads `check_version.py` from `codemie-ai/ci-workflows` at `CI_WORKFLOWS_REF: main`. | `.github/workflows/publish.yml:25`, `.github/workflows/publish.yml:107` |
-| Actions in this repo are pinned by SHA | `.github/workflows/ci.yml:25` |
-| Reusable workflows are pinned to `@main`, not a SHA. This is a known exposure: a change in `ci-workflows` reaches CI and publish without review here. | `.github/workflows/ci.yml:64`, `.github/workflows/publish.yml:170` |
-| A `release` event publishes only a tagged commit on `main` | `.github/workflows/publish.yml:88-95` |
-| A manual `workflow_dispatch` publish needs `dry_run` off, the `publish` input set to `publish`, `main` as the ref, and a tag on the run commit | `.github/workflows/publish.yml:76`, `.github/workflows/publish.yml:97-102`, `.github/workflows/publish.yml:163-166`, `.github/workflows/publish.yml:74-86` |
+| Default workflow permission is `contents: read` | `.github/workflows/ci.yml`, top-level `permissions`; `.github/workflows/publish.yml`, top-level `permissions` |
+| Only the `publish` job has `id-token: write` | `.github/workflows/publish.yml`, job `publish`, `permissions` |
+| The `publish` job uses PyPI trusted publishing (OIDC). No PyPI token is stored or passed. The job runs in the `release` environment and only in `codemie-ai/codemie-mcp-servers`. | `.github/workflows/publish.yml`, job `publish` (`if:`, `environment: release`, step "Publish to PyPI"); `docs/RELEASING.md`, "Admin prerequisites" |
+| The `verify` job has no secrets. It downloads `check_version.py` from `codemie-ai/ci-workflows` at `CI_WORKFLOWS_REF: main`. | `.github/workflows/publish.yml`, top-level `env`; job `verify`, step "Download version check script" |
+| Actions in this repo are pinned by SHA, also `pypa/gh-action-pypi-publish` in the `publish` job | `uses:` lines in `.github/workflows/*.yml` |
+| Reusable workflows are pinned to `@main`, not a SHA. This is a known exposure: a change in `ci-workflows` reaches CI without review here. The `check_version.py` download in the `verify` job of `publish.yml` comes from `main` too. | `.github/workflows/ci.yml`, `.github/workflows/codeql.yml`, `.github/workflows/pr-title-lint.yml` (`uses: codemie-ai/ci-workflows/...@main`); `.github/workflows/publish.yml`, job `verify` |
+| A `release` event publishes only a tagged commit on `main` | `.github/workflows/publish.yml`, job `verify`, steps "Require the tag on the released commit" and "Require the tagged commit on main" |
+| A manual `workflow_dispatch` publish needs `dry_run` off, the `publish` input set to `publish`, `main` as the ref, and a tag on the run commit | `.github/workflows/publish.yml`: `workflow_dispatch` inputs; job `verify`, steps "Require the tag on the released commit" and "Require main for a real publish"; job `publish`, `if:` |
