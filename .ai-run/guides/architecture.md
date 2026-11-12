@@ -121,7 +121,7 @@ The servers have no retry, rate-limit or timeout logic of their own. They log to
 
 Imports from `codemie_sdk.models.*` tie the servers to SDK models. The workflows response model reads aliased SDK fields (`WorkflowExecutionResponse`). Check these when you change the lower bound of the SDK range. No lockfile exists, so CI resolves the newest allowed SDK on each run.
 
-External services: the CodeMie API (through the SDK), PyPI (publication) and `codemie-ai/ci-workflows` (reusable workflows). Publishing, pinning and permissions are in `security.md`. Release steps are in `docs/RELEASING.md`.
+External services: the CodeMie API (through the SDK), PyPI (publication) and `codemie-ai/ci-workflows` (reusable workflows). Publishing, pinning and permissions are in `development/security-patterns.md`. Release steps are in `docs/RELEASING.md`.
 
 ## Known Defects To Check Before You Copy A Pattern
 

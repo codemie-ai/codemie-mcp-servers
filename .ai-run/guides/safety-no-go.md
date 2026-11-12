@@ -2,7 +2,7 @@
 
 Things an AI agent must never do in this repository. The list applies to every agent: Claude Code, Codex, Copilot, Gemini and others. In Claude Code, `.claude/settings.json` (`permissions.deny`) blocks the usual spellings of this list. The file is a guard, not a security boundary: a shell glob such as `cat .env*`, a script, a subprocess or another spelling of a command can get past it. So this guide applies to Claude Code too. Other tools do not read that file. If you change one, change the other.
 
-If a task needs an item on this list, stop and ask a person. Secrets handling, TLS and CI permissions are in `security.md`. This guide only lists refusals.
+If a task needs an item on this list, stop and ask a person. Secrets handling, TLS and CI permissions are in `development/security-patterns.md`. This guide only lists refusals.
 
 ## Files never read or changed
 
@@ -34,7 +34,7 @@ If a task needs an item on this list, stop and ask a person. Secrets handling, T
 | `gh release create` | A published release starts `publish.yml` and releases to PyPI (`docs/RELEASING.md`). |
 | `gh workflow run` | `publish.yml` accepts a manual run that can publish. A person decides every manual run. |
 | Push to `main`, or merge a PR | Every PR needs one approval and green CI (`CONTRIBUTING.md`, "Review Rule"). |
-| Add a write or delete MCP tool | It is a security-relevant change (`security.md`, "Tool Input And Destructive Tools"). |
+| Add a write or delete MCP tool | It is a security-relevant change (`development/security-patterns.md`, "Tool Input And Destructive Tools"). |
 | Call `delete_datasource` against a live CodeMie installation | It deletes with no confirmation (`mcp/datasources/src/codemie_mcp_datasources/server.py:260`). |
 
 The last three rows have no rule in `.claude/settings.json`, because a command pattern cannot express them.

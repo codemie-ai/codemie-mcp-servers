@@ -2,7 +2,7 @@
 
 Report vulnerabilities through a GitHub Security Advisory, not a public issue (`SECURITY.md`, "Reporting a Vulnerability").
 
-Files, commands and actions that agents must never touch are in `safety-no-go.md`. In Claude Code, `.claude/settings.json` blocks the usual spellings of that list. It is a guard, not a security boundary.
+Files, commands and actions that agents must never touch are in `../safety-no-go.md`. In Claude Code, `.claude/settings.json` blocks the usual spellings of that list. It is a guard, not a security boundary.
 
 ## Secrets Management
 
@@ -16,7 +16,7 @@ Secret scanning rules are in `.gitleaks.toml`.
 
 ## Public repository content
 
-CI scans the tree. Do not commit credentials, private hostnames, ticket keys or personal e-mail addresses (`CONTRIBUTING.md`). Use `https://codemie.example.com` in examples. The scans are the CI jobs `Internal references` and `Security` (see `quality-gates.md`). Ticket key and tracker details are in `project.md`, as placeholders only.
+CI scans the tree. Do not commit credentials, private hostnames, ticket keys or personal e-mail addresses (`CONTRIBUTING.md`). Use `https://codemie.example.com` in examples. The scans are the CI jobs `Internal references` and `Security` (see `../quality-gates.md`). Ticket key and tracker details are in `../project.md`, as placeholders only.
 
 ## TLS
 
@@ -29,7 +29,7 @@ Verification is on by default. Parsing is strict, so an unknown value stops the 
 
 ## Startup Validation
 
-The server exits with a non-zero code before any network call when a required setting is missing (`README.md`). CI enforces this in the smoke test (see `quality-gates.md`). Do not add a code path that creates a client before this check.
+The server exits with a non-zero code before any network call when a required setting is missing (`README.md`). CI enforces this in the smoke test (see `../quality-gates.md`). Do not add a code path that creates a client before this check.
 
 ## Tool Input And Destructive Tools
 

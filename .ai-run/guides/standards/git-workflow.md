@@ -21,7 +21,9 @@ Use Conventional Commits. The PR title is the checked format (`.github/workflows
 
 ## Merge Strategy
 
-Squash merge. Assumption: The recent commits on `main` have one parent and end in the PR number, for example `ci(workflows): reuse pypi publish workflow (#15)`. The title becomes the commit subject on `main`, so the title format matters. No repository file states the strategy, so this is inferred from history.
+Squash merge. The PR title becomes the commit subject on `main`, so the title format matters. Commits on `main` end in the PR number, for example `ci(workflows): reuse pypi publish workflow (#15)`.
+
+Repository settings (`gh api repos/codemie-ai/codemie-mcp-servers`): `allow_squash_merge=true`, `allow_merge_commit=false`, `allow_rebase_merge=true`, `squash_merge_commit_title=PR_TITLE`. Use squash, not rebase.
 
 ## Pull Requests
 

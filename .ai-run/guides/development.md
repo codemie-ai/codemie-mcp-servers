@@ -55,4 +55,4 @@ Check on 2026-11-05 in a scratch copy: with Poetry 2.5.1, setting a new version 
 
 ## Documentation
 
-Each package README is the user reference for its tools and settings. Update it in the same PR as the tool. Keep placeholder values in examples (`mcp/assistants/README.md`). Write public text without internal references (`CONTRIBUTING.md`; rules in `security.md`).
+Each package README is the user reference for its tools and settings. Update it in the same PR as the tool. Keep placeholder values in examples (`mcp/assistants/README.md`). Write public text without internal references (`CONTRIBUTING.md`; rules in `development/security-patterns.md`).

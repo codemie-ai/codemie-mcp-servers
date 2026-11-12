@@ -10,7 +10,7 @@ AGENTS.md has no native import directive. Open the paths below as plain files.
 |---|---|---|
 | Project | .ai-run/guides/project.md | Identity, tracker, ticket and PR adapters |
 | Architecture | .ai-run/guides/architecture.md | Package layout, startup differences, tool inventory, SDK client, settings, known defects |
-| Security | .ai-run/guides/security.md | Secrets, public repository content, TLS, CI permissions |
+| Security | .ai-run/guides/development/security-patterns.md | Secrets, public repository content, TLS, CI permissions |
 | Development | .ai-run/guides/development.md | Errors, logging, configuration, dependencies, versioning |
 | Safety | .ai-run/guides/safety-no-go.md | Files, commands and actions that are off limits; same list as `.claude/settings.json` |
 | Quality gates | .ai-run/guides/quality-gates.md | Exact checks per package, and gates that do not exist |
@@ -24,10 +24,10 @@ AGENTS.md has no native import directive. Open the paths below as plain files.
 
 | Category | User Intent | Example Requests | P0 Guide | P1 Guide |
 |---|---|---|---|---|
-| Tool | Add or change an MCP tool | "add a datasource tool" | .ai-run/guides/architecture.md | .ai-run/guides/development.md, .ai-run/guides/security.md |
+| Tool | Add or change an MCP tool | "add a datasource tool" | .ai-run/guides/architecture.md | .ai-run/guides/development.md, .ai-run/guides/development/security-patterns.md |
 | Package | Add a package or change the layout | "add a new MCP server" | .ai-run/guides/architecture.md | docs/RELEASING.md |
-| Platform | Change SDK use, authentication or settings | "support client credentials" | .ai-run/guides/architecture.md | .ai-run/guides/development.md, .ai-run/guides/security.md |
-| Security | Secrets, TLS, CI permissions | "review the token handling" | .ai-run/guides/security.md | .ai-run/guides/quality-gates.md |
+| Platform | Change SDK use, authentication or settings | "support client credentials" | .ai-run/guides/architecture.md | .ai-run/guides/development.md, .ai-run/guides/development/security-patterns.md |
+| Security | Secrets, TLS, CI permissions | "review the token handling" | .ai-run/guides/development/security-patterns.md | .ai-run/guides/quality-gates.md |
 | Verification | Run or add checks | "run the checks" | .ai-run/guides/quality-gates.md | .ai-run/guides/standards/code-quality.md |
 | Testing | Write tests or assess test gaps | "add tests for datasources" | .ai-run/guides/testing/qa-strategy.md | .ai-run/guides/testing/qa-health.md, .ai-run/guides/quality-gates.md |
 | Git | Commit, branch, PR | "open a PR" | .ai-run/guides/standards/git-workflow.md | .ai-run/guides/project.md |
@@ -42,7 +42,7 @@ AGENTS.md has no native import directive. Open the paths below as plain files.
 | Testing | "write tests" / "run tests" | Only write or run tests when requested or when needed for verification. Load `.ai-run/guides/quality-gates.md` and `.ai-run/guides/testing/qa-strategy.md` first. |
 | Git Operations | "commit" / "push" / "PR" | Only then; load `.ai-run/guides/standards/git-workflow.md` |
 | Shell | ANY shell command | Use bash/Linux-compatible syntax |
-| Public Content | ANY change to a tracked file | Load the "Public repository content" section of `.ai-run/guides/security.md` |
+| Public Content | ANY change to a tracked file | Load the "Public repository content" section of `.ai-run/guides/development/security-patterns.md` |
 | Release | "release" / "publish" | Only when asked; load `docs/RELEASING.md` |
 
 ## Commands

@@ -17,7 +17,7 @@
 
 > Adapter configuration belongs exclusively in `## Ticket Adapter`. Do not duplicate adapter status or instructions in the Work Item Tracker table.
 
-Public content rules: `.ai-run/guides/security.md`, section "Public repository content".
+Public content rules: `.ai-run/guides/development/security-patterns.md`, section "Public repository content".
 
 ## Ticket Adapter
 

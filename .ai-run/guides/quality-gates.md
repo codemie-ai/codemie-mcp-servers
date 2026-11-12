@@ -48,7 +48,7 @@ Pass: non-zero exit code, and the output has `Missing required settings: CODEMIE
 | `PR Title` | `.github/workflows/pr-title-lint.yml`, line 17 | the title is not Conventional Commits |
 | `CodeQL (actions)`, `CodeQL (python)` | `.github/workflows/codeql.yml`, line 25 | finding in `actions` or `python` |
 
-The last four have no local command in this repository. CI permissions and pinning are in `security.md`.
+The last four have no local command in this repository. CI permissions and pinning are in `development/security-patterns.md`.
 
 ## Gates that do not exist
 

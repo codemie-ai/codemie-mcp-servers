@@ -26,7 +26,7 @@ Modules with zero coverage that carry logic:
 | `mcp/datasources/src/codemie_mcp_datasources/server.py:260-267` | 0% | `delete_datasource` deletes with no confirmation. Destructive tool with no test of its input or result. |
 | `mcp/assistants/src/codemie_mcp_assistants/server.py:49-76` | 0% | `sanitize_tool_name` checks `> 60` and slices to 64, then `ask_` is added (`:119`). A long assistant name can make an invalid MCP tool name. Pure function, cheapest test to add. |
 | `mcp/assistants/src/codemie_mcp_assistants/model.py:44`, `mcp/workflows/src/codemie_mcp_workflows/model.py:30` | 0% | `validate_auth_method` decides between username and password and client credentials. Only the "nothing set" path is exercised. |
-| `_read_verify_ssl` (`mcp/assistants/src/codemie_mcp_assistants/model.py:85`, `mcp/datasources/src/codemie_mcp_datasources/server.py:37`, `mcp/workflows/src/codemie_mcp_workflows/model.py:63`) | 0% | Security-relevant: an unknown value must raise, not turn TLS off (`security.md`, "TLS"). Three copies, no test keeps them equal. |
+| `_read_verify_ssl` (`mcp/assistants/src/codemie_mcp_assistants/model.py:85`, `mcp/datasources/src/codemie_mcp_datasources/server.py:37`, `mcp/workflows/src/codemie_mcp_workflows/model.py:63`) | 0% | Security-relevant: an unknown value must raise, not turn TLS off (`development/security-patterns.md`, "TLS"). Three copies, no test keeps them equal. |
 | `mcp/workflows/src/codemie_mcp_workflows/server.py:52` | 0% | `execute_workflow` validates the SDK response with an aliased Pydantic model. No lockfile, so a new SDK release can break it with no failing check (`architecture.md`, "SDK Client And Settings"). |
 
 ## Known Test Debt
