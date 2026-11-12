@@ -1,6 +1,6 @@
 # QA Health
 
-**Last assessed**: 2026-11-09
+**Last assessed**: 2026-11-12
 **Coverage**: low. No coverage data, qualitative assessment only. No package has a test file, so measured coverage would be 0% for each.
 
 Method: test-to-source mapping. `mcp/` has 8 source files and 980 lines (`wc -l mcp/*/src/*/*.py`) and no test file. On 2026-11-09, `poetry run pytest -q` in a scratch copy of each package printed `no tests ran` (exit code 5). The only executed behaviour check is the CI smoke test (`.github/workflows/ci.yml:48-58`). Strategy and conventions are in `qa-strategy.md`.

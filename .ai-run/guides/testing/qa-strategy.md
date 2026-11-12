@@ -1,6 +1,6 @@
 # QA Strategy
 
-**Last assessed**: 2026-11-09
+**Last assessed**: 2026-11-12
 
 The repository has three Python packages under `mcp/`: `assistants`, `datasources` and `workflows`. All three use the same stack: Python 3.12, Poetry, FastMCP over stdio and `codemie-sdk-python` (`architecture.md`). There is no second stack, so one strategy covers all three. Run every command in the folder of the package (`quality-gates.md`).
 
