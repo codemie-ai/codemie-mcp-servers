@@ -2,6 +2,8 @@
 
 Report vulnerabilities through a GitHub Security Advisory, not a public issue (`SECURITY.md`, "Reporting a Vulnerability").
 
+Files, commands and actions that agents must never touch are in `safety-no-go.md`. `.claude/settings.json` enforces the same list for Claude Code.
+
 ## Secrets Management
 
 | Bad | Best |
